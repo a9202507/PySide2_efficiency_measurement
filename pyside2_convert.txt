@@ -1,0 +1,1 @@
+pyside2-uic -o .\efficiency_ui.py .\efficiency_ui.ui
