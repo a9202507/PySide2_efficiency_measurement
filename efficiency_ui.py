@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'efficiency_ui.ui'
+# Form generated from reading UI file 'efficiency_ui.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.15.2
+# Created by: Qt User Interface Compiler version 5.15.2
 ##
-## WARNING! All changes made in this file will be lost when recompiling UI file!
+# WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
 from PySide2.QtCore import *
@@ -32,7 +32,7 @@ class Ui_MainWindow(object):
         font = QFont()
         font.setPointSize(12)
         self.label_10.setFont(font)
-        self.label_10.setPixmap(QPixmap(u"../../../../../Users/EChen3/.designer/backup/IFX_LOGO_RGB.jpg"))
+        self.label_10.setPixmap(QPixmap(u"./resources/IFX_LOGO_RGB.jpg"))
         self.label_10.setScaledContents(True)
         self.label_23 = QLabel(self.centralwidget)
         self.label_23.setObjectName(u"label_23")
@@ -63,7 +63,6 @@ class Ui_MainWindow(object):
         self.radioButton_2.setObjectName(u"radioButton_2")
 
         self.verticalLayout_3.addWidget(self.radioButton_2)
-
 
         self.gridLayout_4.addWidget(self.groupBox_6, 2, 1, 1, 1)
 
@@ -440,6 +439,17 @@ class Ui_MainWindow(object):
         self.gridLayout_2 = QGridLayout(self.groupBox_8)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.comboBox_2 = QComboBox(self.groupBox_8)
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
         self.comboBox_2.setObjectName(u"comboBox_2")
 
         self.gridLayout_2.addWidget(self.comboBox_2, 0, 1, 1, 2)
@@ -506,96 +516,193 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(1)
-
+        self.tabWidget.setCurrentIndex(0)
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.actionAbout_the_GUI.setText(QCoreApplication.translate("MainWindow", u"About the GUI", None))
-        self.actionLoad_config.setText(QCoreApplication.translate("MainWindow", u"Load config", None))
-        self.actionSave_config.setText(QCoreApplication.translate("MainWindow", u"Save config", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate(
+            "MainWindow", u"MainWindow", None))
+        self.actionAbout_the_GUI.setText(
+            QCoreApplication.translate("MainWindow", u"About the GUI", None))
+        self.actionLoad_config.setText(
+            QCoreApplication.translate("MainWindow", u"Load config", None))
+        self.actionSave_config.setText(
+            QCoreApplication.translate("MainWindow", u"Save config", None))
         self.label_10.setText("")
-        self.label_23.setText(QCoreApplication.translate("MainWindow", u"Efficiency GUI", None))
-        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"DC source setting", None))
+        self.label_23.setText(QCoreApplication.translate(
+            "MainWindow", u"Efficiency GUI", None))
+        self.groupBox.setTitle(QCoreApplication.translate(
+            "MainWindow", u"DC source setting", None))
         self.groupBox_6.setTitle("")
-        self.radioButton.setText(QCoreApplication.translate("MainWindow", u"On", None))
-        self.radioButton_2.setText(QCoreApplication.translate("MainWindow", u"Off", None))
-        self.label_12.setText(QCoreApplication.translate("MainWindow", u"Toggle", None))
-        self.lineEdit_16.setText(QCoreApplication.translate("MainWindow", u"20", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"current(A)", None))
-        self.label_18.setText(QCoreApplication.translate("MainWindow", u"voltage(V)", None))
-        self.lineEdit_17.setText(QCoreApplication.translate("MainWindow", u"20", None))
+        self.radioButton.setText(
+            QCoreApplication.translate("MainWindow", u"On", None))
+        self.radioButton_2.setText(
+            QCoreApplication.translate("MainWindow", u"Off", None))
+        self.label_12.setText(QCoreApplication.translate(
+            "MainWindow", u"Toggle", None))
+        self.lineEdit_16.setText(
+            QCoreApplication.translate("MainWindow", u"20", None))
+        self.label.setText(QCoreApplication.translate(
+            "MainWindow", u"current(A)", None))
+        self.label_18.setText(QCoreApplication.translate(
+            "MainWindow", u"voltage(V)", None))
+        self.lineEdit_17.setText(
+            QCoreApplication.translate("MainWindow", u"20", None))
         self.groupBox_7.setTitle("")
-        self.pushButton_8.setText(QCoreApplication.translate("MainWindow", u"Start efficiency", None))
-        self.pushButton_4.setText(QCoreApplication.translate("MainWindow", u"abort efficiency", None))
-        self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"Clear log", None))
-        self.groupBox_10.setTitle(QCoreApplication.translate("MainWindow", u"E loading", None))
+        self.pushButton_8.setText(QCoreApplication.translate(
+            "MainWindow", u"Start efficiency", None))
+        self.pushButton_4.setText(QCoreApplication.translate(
+            "MainWindow", u"abort efficiency", None))
+        self.pushButton_5.setText(QCoreApplication.translate(
+            "MainWindow", u"Clear log", None))
+        self.groupBox_10.setTitle(QCoreApplication.translate(
+            "MainWindow", u"E loading", None))
         self.groupBox_9.setTitle("")
-        self.label_27.setText(QCoreApplication.translate("MainWindow", u"Loadling Toggle (Amps)", None))
-        self.lineEdit_23.setText(QCoreApplication.translate("MainWindow", u"5", None))
-        self.radioButton_5.setText(QCoreApplication.translate("MainWindow", u"Off", None))
-        self.radioButton_6.setText(QCoreApplication.translate("MainWindow", u"On", None))
-        self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"channel setting", None))
-        self.label_13.setText(QCoreApplication.translate("MainWindow", u"Channel", None))
-        self.label_16.setText(QCoreApplication.translate("MainWindow", u"CH1", None))
-        self.label_17.setText(QCoreApplication.translate("MainWindow", u"CH3", None))
-        self.label_24.setText(QCoreApplication.translate("MainWindow", u"CH5", None))
-        self.label_25.setText(QCoreApplication.translate("MainWindow", u"CH7", None))
-        self.label_26.setText(QCoreApplication.translate("MainWindow", u"CH9", None))
-        self.label_15.setText(QCoreApplication.translate("MainWindow", u"Iout max", None))
-        self.lineEdit_2.setText(QCoreApplication.translate("MainWindow", u"80", None))
-        self.lineEdit_3.setText(QCoreApplication.translate("MainWindow", u"80", None))
-        self.lineEdit_4.setText(QCoreApplication.translate("MainWindow", u"80", None))
-        self.lineEdit_6.setText(QCoreApplication.translate("MainWindow", u"80", None))
-        self.lineEdit_5.setText(QCoreApplication.translate("MainWindow", u"80", None))
-        self.checkBox_3.setText(QCoreApplication.translate("MainWindow", u"selected", None))
-        self.checkBox_4.setText(QCoreApplication.translate("MainWindow", u"selected", None))
-        self.checkBox_5.setText(QCoreApplication.translate("MainWindow", u"selected", None))
-        self.checkBox_6.setText(QCoreApplication.translate("MainWindow", u"selected", None))
-        self.checkBox_7.setText(QCoreApplication.translate("MainWindow", u"selected", None))
-        self.groupBox_11.setTitle(QCoreApplication.translate("MainWindow", u"efficiency measurement condition", None))
-        self.label_29.setText(QCoreApplication.translate("MainWindow", u"start current (A)", None))
-        self.lineEdit_18.setText(QCoreApplication.translate("MainWindow", u"0", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"end current (A)", None))
-        self.lineEdit_19.setText(QCoreApplication.translate("MainWindow", u"400", None))
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"step(%)", None))
-        self.lineEdit_20.setText(QCoreApplication.translate("MainWindow", u"20", None))
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"cooldown time(Sec)", None))
-        self.lineEdit_22.setText(QCoreApplication.translate("MainWindow", u"5", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"duration time(Sec)", None))
-        self.lineEdit_21.setText(QCoreApplication.translate("MainWindow", u"2", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"main", None))
-        self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Equipments setting", None))
+        self.label_27.setText(QCoreApplication.translate(
+            "MainWindow", u"Loadling Toggle (Amps)", None))
+        self.lineEdit_23.setText(
+            QCoreApplication.translate("MainWindow", u"5", None))
+        self.radioButton_5.setText(
+            QCoreApplication.translate("MainWindow", u"Off", None))
+        self.radioButton_6.setText(
+            QCoreApplication.translate("MainWindow", u"On", None))
+        self.groupBox_3.setTitle(QCoreApplication.translate(
+            "MainWindow", u"channel setting", None))
+        self.label_13.setText(QCoreApplication.translate(
+            "MainWindow", u"Channel", None))
+        self.label_16.setText(
+            QCoreApplication.translate("MainWindow", u"CH1", None))
+        self.label_17.setText(
+            QCoreApplication.translate("MainWindow", u"CH3", None))
+        self.label_24.setText(
+            QCoreApplication.translate("MainWindow", u"CH5", None))
+        self.label_25.setText(
+            QCoreApplication.translate("MainWindow", u"CH7", None))
+        self.label_26.setText(
+            QCoreApplication.translate("MainWindow", u"CH9", None))
+        self.label_15.setText(QCoreApplication.translate(
+            "MainWindow", u"Iout max", None))
+        self.lineEdit_2.setText(
+            QCoreApplication.translate("MainWindow", u"80", None))
+        self.lineEdit_3.setText(
+            QCoreApplication.translate("MainWindow", u"80", None))
+        self.lineEdit_4.setText(
+            QCoreApplication.translate("MainWindow", u"80", None))
+        self.lineEdit_6.setText(
+            QCoreApplication.translate("MainWindow", u"80", None))
+        self.lineEdit_5.setText(
+            QCoreApplication.translate("MainWindow", u"80", None))
+        self.checkBox_3.setText(QCoreApplication.translate(
+            "MainWindow", u"selected", None))
+        self.checkBox_4.setText(QCoreApplication.translate(
+            "MainWindow", u"selected", None))
+        self.checkBox_5.setText(QCoreApplication.translate(
+            "MainWindow", u"selected", None))
+        self.checkBox_6.setText(QCoreApplication.translate(
+            "MainWindow", u"selected", None))
+        self.checkBox_7.setText(QCoreApplication.translate(
+            "MainWindow", u"selected", None))
+        self.groupBox_11.setTitle(QCoreApplication.translate(
+            "MainWindow", u"efficiency measurement condition", None))
+        self.label_29.setText(QCoreApplication.translate(
+            "MainWindow", u"start current (A)", None))
+        self.lineEdit_18.setText(
+            QCoreApplication.translate("MainWindow", u"0", None))
+        self.label_4.setText(QCoreApplication.translate(
+            "MainWindow", u"end current (A)", None))
+        self.lineEdit_19.setText(
+            QCoreApplication.translate("MainWindow", u"400", None))
+        self.label_5.setText(QCoreApplication.translate(
+            "MainWindow", u"step(%)", None))
+        self.lineEdit_20.setText(
+            QCoreApplication.translate("MainWindow", u"20", None))
+        self.label_7.setText(QCoreApplication.translate(
+            "MainWindow", u"cooldown time(Sec)", None))
+        self.lineEdit_22.setText(
+            QCoreApplication.translate("MainWindow", u"5", None))
+        self.label_6.setText(QCoreApplication.translate(
+            "MainWindow", u"duration time(Sec)", None))
+        self.lineEdit_21.setText(
+            QCoreApplication.translate("MainWindow", u"2", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(
+            self.tab), QCoreApplication.translate("MainWindow", u"main", None))
+        self.groupBox_2.setTitle(QCoreApplication.translate(
+            "MainWindow", u"Equipments setting", None))
         self.lineEdit_28.setText("")
         self.lineEdit_30.setText("")
-        self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"re-scan equipments", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"E-load", None))
-        self.label_19.setText(QCoreApplication.translate("MainWindow", u"DC source", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"DAQ", None))
+        self.pushButton_6.setText(QCoreApplication.translate(
+            "MainWindow", u"re-scan equipments", None))
+        self.label_3.setText(QCoreApplication.translate(
+            "MainWindow", u"E-load", None))
+        self.label_19.setText(QCoreApplication.translate(
+            "MainWindow", u"DC source", None))
+        self.label_2.setText(QCoreApplication.translate(
+            "MainWindow", u"DAQ", None))
         self.lineEdit_29.setText("")
-        self.groupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Misc", None))
-        self.label_14.setText(QCoreApplication.translate("MainWindow", u"Output folder in PC", None))
-        self.label_8.setText(QCoreApplication.translate("MainWindow", u"filename", None))
-        self.checkBox.setText(QCoreApplication.translate("MainWindow", u"filename include Vin/Vout", None))
-        self.pushButton_11.setText(QCoreApplication.translate("MainWindow", u"set report folder", None))
-        self.checkBox_2.setText(QCoreApplication.translate("MainWindow", u"filename include trimstamp", None))
-        self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"Save waveform once", None))
-        self.lineEdit_27.setText(QCoreApplication.translate("MainWindow", u"./report", None))
-        self.lineEdit_7.setText(QCoreApplication.translate("MainWindow", u"IFX_DB410_", None))
-        self.groupBox_5.setTitle(QCoreApplication.translate("MainWindow", u"test", None))
-        self.pushButton_9.setText(QCoreApplication.translate("MainWindow", u"load report for Vmax", None))
-        self.pushButton_10.setText(QCoreApplication.translate("MainWindow", u"load report for Vmin", None))
-        self.pushButton_12.setText(QCoreApplication.translate("MainWindow", u"test button1", None))
-        self.pushButton_13.setText(QCoreApplication.translate("MainWindow", u"Get DAQ value once", None))
-        self.groupBox_8.setTitle(QCoreApplication.translate("MainWindow", u"DAQ detial setting", None))
-        self.label_11.setText(QCoreApplication.translate("MainWindow", u"Iin channel", None))
-        self.label_20.setText(QCoreApplication.translate("MainWindow", u"Vin channel", None))
-        self.label_21.setText(QCoreApplication.translate("MainWindow", u"Vout channel", None))
-        self.label_22.setText(QCoreApplication.translate("MainWindow", u"Iin channel", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"setting", None))
-        self.menuabout.setTitle(QCoreApplication.translate("MainWindow", u"Menu", None))
-    # retranslateUi
+        self.groupBox_4.setTitle(
+            QCoreApplication.translate("MainWindow", u"Misc", None))
+        self.label_14.setText(QCoreApplication.translate(
+            "MainWindow", u"Output folder in PC", None))
+        self.label_8.setText(QCoreApplication.translate(
+            "MainWindow", u"filename", None))
+        self.checkBox.setText(QCoreApplication.translate(
+            "MainWindow", u"filename include Vin/Vout", None))
+        self.pushButton_11.setText(QCoreApplication.translate(
+            "MainWindow", u"set report folder", None))
+        self.checkBox_2.setText(QCoreApplication.translate(
+            "MainWindow", u"filename include trimstamp", None))
+        self.pushButton_7.setText(QCoreApplication.translate(
+            "MainWindow", u"Save waveform once", None))
+        self.lineEdit_27.setText(QCoreApplication.translate(
+            "MainWindow", u"./report", None))
+        self.lineEdit_7.setText(QCoreApplication.translate(
+            "MainWindow", u"IFX_DB410_", None))
+        self.groupBox_5.setTitle(
+            QCoreApplication.translate("MainWindow", u"test", None))
+        self.pushButton_9.setText(QCoreApplication.translate(
+            "MainWindow", u"load report for Vmax", None))
+        self.pushButton_10.setText(QCoreApplication.translate(
+            "MainWindow", u"load report for Vmin", None))
+        self.pushButton_12.setText(QCoreApplication.translate(
+            "MainWindow", u"test button1", None))
+        self.pushButton_13.setText(QCoreApplication.translate(
+            "MainWindow", u"Get DAQ value once", None))
+        self.groupBox_8.setTitle(QCoreApplication.translate(
+            "MainWindow", u"DAQ detial setting", None))
+        self.comboBox_2.setItemText(0, "")
+        self.comboBox_2.setItemText(
+            1, QCoreApplication.translate("MainWindow", u"101", None))
+        self.comboBox_2.setItemText(
+            2, QCoreApplication.translate("MainWindow", u"102", None))
+        self.comboBox_2.setItemText(
+            3, QCoreApplication.translate("MainWindow", u"103", None))
+        self.comboBox_2.setItemText(
+            4, QCoreApplication.translate("MainWindow", u"104", None))
+        self.comboBox_2.setItemText(
+            5, QCoreApplication.translate("MainWindow", u"105", None))
+        self.comboBox_2.setItemText(
+            6, QCoreApplication.translate("MainWindow", u"106", None))
+        self.comboBox_2.setItemText(
+            7, QCoreApplication.translate("MainWindow", u"107", None))
+        self.comboBox_2.setItemText(
+            8, QCoreApplication.translate("MainWindow", u"108", None))
+        self.comboBox_2.setItemText(
+            9, QCoreApplication.translate("MainWindow", u"109", None))
+        self.comboBox_2.setItemText(
+            10, QCoreApplication.translate("MainWindow", u"110", None))
 
+        self.label_11.setText(QCoreApplication.translate(
+            "MainWindow", u"Iin channel", None))
+        self.label_20.setText(QCoreApplication.translate(
+            "MainWindow", u"Vin channel", None))
+        self.label_21.setText(QCoreApplication.translate(
+            "MainWindow", u"Vout channel", None))
+        self.label_22.setText(QCoreApplication.translate(
+            "MainWindow", u"Iin channel", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(
+            self.tab_2), QCoreApplication.translate("MainWindow", u"setting", None))
+        self.menuabout.setTitle(
+            QCoreApplication.translate("MainWindow", u"Menu", None))
+    # retranslateUi

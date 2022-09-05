@@ -41,6 +41,19 @@ class visa_equipment():
         return self.equipment_name
 
 
+class agilentDAQ(visa_equipment):
+    def __init__(self, visa_resource_name):
+        visa_equipment.__init__(self, visa_resource_name)
+        pass
+
+    def read_channel_voltage(self, channel_number):
+        self.voltage_value = self.inst.query(
+            'MEAS:VOLT:DC? Auto,DEF,(@'+str(channel_number)+")")
+
+    def get_voltage_result(self):
+        return self.voltage_value
+
+
 class tek_visa_equipment(visa_equipment):
     def __init__(self, visa_resource_name):
         visa_equipment.__init__(self, visa_resource_name)
@@ -178,26 +191,45 @@ def save_waveform_in_inst(visaRsrcAddr, fileSaveLocationInInst, filename, timest
 
 
 class gpibChromaMachine(visa_equipment):
-    def __init__(self,visa_resource_name):
-        visa_equipment.__init__(self,visa_resource_name)
+    def __init__(self, visa_resource_name):
+        visa_equipment.__init__(self, visa_resource_name)
+
     def on(self):
         self.inst.write("CONFigure:OUTPut ON")
+
     def off(self):
         self.inst.write("CONFigure:OUTPut OFF")
-        
+
+
 class gpibChromaDCSource(gpibChromaMachine):
-    def __init__(self,visa_resource_name):
-        gpibChromaMachine.__init__(self,visa_resource_name)
-    def set_voltage(self,voltage):
+    def __init__(self, visa_resource_name):
+        gpibChromaMachine.__init__(self, visa_resource_name)
+
+    def set_voltage(self, voltage):
         self.inst.write(f"SOUR:VOLT {voltage}")
-    def set_current(self,current):
+
+    def set_current(self, current):
         self.inst.write(f"SOUR:CURR {current}")
+
     def measure_voltage(self):
-        self.measure_voltage_value=self.inst.query("FETCh:VOLTage?")
+        self.measure_voltage_value = self.inst.query("FETCh:VOLTage?")
+
+    def measure_voltage(self):
+        self.measure_current_value = self.inst.query('FETCh:CURRent?')
+
+
+class chromaEload(gpibChromaMachine):
+    def __init__(self, visa_resource_name):
+        gpibChromaMachine.__init__(self, visa_resource_name)
+
+    def run(self):
+        self.inst.write("RUN")
+
+    def abort(self):
+        self.inst.write("Abort")
 
 
 if __name__ == '__main__':
 
     devices = get_visa_resource_list()
     print(devices)
-    

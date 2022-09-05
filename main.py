@@ -28,12 +28,39 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.pushButton_6.clicked.connect(self.update_equipment_on_combox)
 
         self.comboBox.currentIndexChanged.connect(self.update_dcsource_name)
+        self.comboBox_7.currentIndexChanged.connect(self.update_DAQ_name)
+        self.comboBox_3.currentIndexChanged.connect(self.update_eload_name)
 
         # DCsource
         self.radioButton.toggled.connect(
             self.update_GUI_and_set_dcsource_on)
         self.radioButton_2.toggled.connect(
             self.update_GUI_and_set_dcsource_off)
+
+        # Chroma eload
+        self.radioButton_6.toggled.connect(self.udpate_GUI_and_set_eload_on)
+        self.radioButton_5.toggled.connect(self.udpate_GUI_and_set_eload_off)
+
+        # DAQ
+        self.pushButton_13.clicked.connect(
+            self.update_GUI_and_get_DAQ_value_once)
+
+    def update_GUI_and_get_DAQ_value_once(self):
+        self.update_GUI()
+        self.DAQ = myvisa.agilentDAQ(self.comboBox_7.currentText())
+        self.DAQ.read_channel_voltage(self.comboBox_2.currentText())
+        result = self.DAQ.get_voltage_result()
+        self.push_msg_to_GUI(
+            f"DAQ CH{self.comboBox_2.currentText()} reading value is {result}")
+
+    def udpate_GUI_and_set_eload_on(self):
+        self.update_GUI()
+        self.eload = myvisa.chromaEload(self.comboBox_3.currentText())
+        self.eload.run()
+
+    def udpate_GUI_and_set_eload_off(self):
+        self.update_GUI()
+        self.eload.abort()
 
     def update_GUI_and_set_dcsource_on(self):
         self.update_GUI()
@@ -55,6 +82,14 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.comboBox.addItem("")
         self.comboBox.addItems(self.resource_list)
 
+        self.comboBox_7.clear()
+        self.comboBox_7.addItem("")
+        self.comboBox_7.addItems(self.resource_list)
+
+        self.comboBox_3.clear()
+        self.comboBox_3.addItem("")
+        self.comboBox_3.addItems(self.resource_list)
+
     def update_dcsource_name(self):
         self.lineEdit_28.clear()
         if self.comboBox.currentText() != "":
@@ -62,6 +97,22 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
                 self.comboBox.currentText())
             device_name = self.dcsource.get_equipment_name()
             self.lineEdit_28.setText(device_name)
+
+    def update_DAQ_name(self):
+        self.lineEdit_29.clear()
+        if self.comboBox_7.currentText() != "":
+            self.DAQ = myvisa.gpibChromaDCSource(
+                self.comboBox_7.currentText())
+            device_name = self.DAQ.get_equipment_name()
+            self.lineEdit_29.setText(device_name)
+
+    def update_eload_name(self):
+        self.lineEdit_30.clear()
+        if self.comboBox_3.currentText() != "":
+            self.eload = myvisa.chromaEload(
+                self.comboBox_3.currentText())
+            device_name = self.eload.get_equipment_name()
+            self.lineEdit_30.setText(device_name)
 
     def get_visa_resource(self):
 
