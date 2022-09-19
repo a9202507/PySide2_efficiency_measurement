@@ -214,7 +214,7 @@ class gpibChromaDCSource(gpibChromaMachine):
     def measure_voltage(self):
         self.measure_voltage_value = self.inst.query("FETCh:VOLTage?")
 
-    def measure_voltage(self):
+    def measure_current(self):
         self.measure_current_value = self.inst.query('FETCh:CURRent?')
 
 

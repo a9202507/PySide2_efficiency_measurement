@@ -7,12 +7,175 @@ from PySide2.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBo
 from PySide2.QtGui import QIcon
 import efficiency_ui
 import visa_function as myvisa
-
+import pandas as pd
+import time
 
 # set icon to taskbar
 import ctypes
 myappid = 'mycompany.myproduct.subproduct.version'  # arbitrary string
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+
+
+class efficiency_measure_thread(QThread):
+
+    def __init__(self):
+        QThread.__init__(self)
+
+    def __del__(self):
+        self.wait()
+
+    def run(self):
+        cooldown_time = float(myWin.lineEdit_22.text())
+        duration_time = float(myWin.lineEdit_21.text())
+
+        end_current = float(myWin.lineEdit_19.text())
+        percentage = (float(myWin.lineEdit_20.text()))/100
+
+        iout_list = [0]
+        iout_step = end_current*percentage
+        itemp = iout_step
+        while itemp <= end_current:
+            iout_list.append(itemp)
+            itemp += iout_step
+        myWin.push_msg_to_GUI(f"iout_list={iout_list}")
+        #iout_list = [1, 2, 3, 4, 5]
+        for iout in iout_list:
+            myWin.push_msg_to_GUI(f"Iout={iout}")
+            myWin.eload.abort()
+            time.sleep(cooldown_time)
+            myWin.eload.setCurrent(9, iout)
+            myWin.eload.run()
+            time.sleep(duration_time)
+            myWin.get_all_daq_value_once()
+
+        myWin.eload.abort()
+
+        myWin.push_msg_to_GUI("completed")
+
+    def stop(self):
+        self.terminate()
+        pass
+    '''
+        self.DB410_msg.emit("==3D test stop==")
+        self.DB410_msg.emit(" ")
+        self.DB410_process_bar.emit(0)
+        # todo
+        self.terminate()
+    '''
+    pass
+
+
+'''
+
+class DB410_3d_thread(QThread): 
+    DB410_msg = Signal(str)
+    DB410_process_bar = Signal(int)
+
+    def __init__(self):
+        QThread.__init__(self)
+
+        # self.DB410_msg = Signal(str)
+
+    def __del__(self):
+        self.wait()
+
+    def run(self):
+        self.DB410_msg.emit("== start to run 3D test==")
+        myWin.update_GUI()
+        myWin.init_scope()
+
+        freq_list_len = len(myWin.parameter_main_freq_list)
+        duty_list_len = len(myWin.parameter_main_duty_list)
+        measure_result_dict = dict()
+        df = pd.DataFrame()
+                    
+        base_filename = "IFX_"
+        for freq_idx, freq in enumerate(myWin.parameter_main_freq_list):
+            for duty_idx, duty in enumerate(myWin.parameter_main_duty_list):
+
+                self.DB410_msg.emit(f"Freq={str(freq)}, Duty={str(duty)}")
+                self.DB410_process_bar.emit(
+                    int((duty_idx+freq_idx*duty_list_len)/(freq_list_len*duty_list_len)*100))
+
+                # scope horizontal scale
+                myWin.set_horizontal_scale_in_scope(str(1/(freq*1000)))
+
+                myWin.send_function_gen_command_one_time(freq, duty, True)
+
+                # for transinet duration time.
+                time.sleep(myWin.parameter_main_ton_duration_time_sec)
+                dt = datetime.datetime.now()
+                timestamp_str = dt.strftime("_%Y%m%d_%H%M%S")
+                filename = base_filename+str(myWin.parameter_main_high_current)+"A_"+str(
+                    myWin.parameter_main_low_current)+"A_"+"Gain"+str(myWin.parameter_main_gain)+"mVa"+"_"+str(freq)+"Khz"+"_D"+str(duty)+timestamp_str
+
+                print(f"line65 filename={filename}")
+                myWin.lineEdit_7.setText(filename)
+                try:
+                    myWin.update_GUI_then_save_waveform_once_time()
+
+                except:
+                    myWin.push_msg_to_GUI("Failed to save waveform to Scope")
+
+                if myWin.debug == True:
+                    myWin.push_msg_to_GUI("save_file_to_PC")
+
+                try:
+                    myWin.save_wavefrom_from_scope_to_pc(filename)
+                except:
+                    myWin.push_msg_to_GUI("Failed to save waveform to PC")
+                # for save wavefrom delay time
+                # myWin.scope.inst.query('*OPC?')
+                time.sleep(1)
+
+            
+                measure_result_dict['Freq'] = float(freq)
+                measure_result_dict['duty'] = float(duty)
+                vmax=myWin.get_scope_meansurement_value('1', "mean")
+                print(f"line88 vmax={vmax}")
+                measure_result_dict['Vmax'] = float(vmax)
+
+                #
+                #except:
+                #    myWin.push_msg_to_GUI(f"Failed to get measurement from scope , Vmax={vmax}")
+
+                
+                vmin=myWin.get_scope_meansurement_value('2', "mean")
+                print(f"line97 vmin={vmin}")
+                measure_result_dict['Vmin'] = vmin
+                
+                #
+                #except:
+                #    myWin.push_msg_to_GUI(f"Failed to get measurement from scope , Vmin={vmin}")
+
+                df = df.append(measure_result_dict, ignore_index=True)
+
+                if myWin.debug == True:
+                    self.DB410_msg.emit(str(measure_result_dict))
+                    print(f"df={df}")
+                time.sleep(0.2)
+
+                myWin.send_function_gen_command_one_time(freq, duty, False)
+
+                # for transient off duration time
+                time.sleep(myWin.parameter_main_toff_duration_time_sec)
+        self.DB410_process_bar.emit(100)
+
+        try:
+            df.to_excel(
+                f"{myWin.lineEdit_27.text()}/{myWin.lineEdit_7.text()}{myWin.parameter_main_high_current}A_{myWin.parameter_main_low_current}A_report_{datetime.datetime.now().strftime('%Y_%m%d_%H%M')}.xls")
+        except:
+            myWin.push_msg_to_GUI("Failed to save report to PC")
+        self.DB410_msg.emit("==3D test finish==")
+        self.DB410_msg.emit(" ")
+
+    def stop(self):
+        self.DB410_msg.emit("==3D test stop==")
+        self.DB410_msg.emit(" ")
+        self.DB410_process_bar.emit(0)
+        # todo
+        self.terminate()
+'''
 
 
 class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
@@ -30,6 +193,10 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.comboBox.currentIndexChanged.connect(self.update_dcsource_name)
         self.comboBox_7.currentIndexChanged.connect(self.update_DAQ_name)
         self.comboBox_3.currentIndexChanged.connect(self.update_eload_name)
+        self.pushButton_12.clicked.connect(self.get_all_daq_value_once)
+        self.pushButton_8.clicked.connect(self.run_efficiency_measurement)
+        self.pushButton_4.clicked.connect(self.abort_efficiency_measurement)
+        self.pushButton_5.clicked.connect(self.clear_log_msg)
 
         # DCsource
         self.radioButton.toggled.connect(
@@ -44,6 +211,9 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         # DAQ
         self.pushButton_13.clicked.connect(
             self.update_GUI_and_get_DAQ_value_once)
+
+        # init thread
+        self.efficiency_measurement_thread = efficiency_measure_thread()
 
     def update_GUI_and_get_DAQ_value_once(self):
         self.update_GUI()
@@ -102,8 +272,7 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
     def update_DAQ_name(self):
         self.lineEdit_29.clear()
         if self.comboBox_7.currentText() != "":
-            self.DAQ = myvisa.gpibChromaDCSource(
-                self.comboBox_7.currentText())
+            self.DAQ = myvisa.agilentDAQ(self.comboBox_7.currentText())
             device_name = self.DAQ.get_equipment_name()
             self.lineEdit_29.setText(device_name)
 
@@ -127,6 +296,43 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
             # self.textEdit.append("")
         else:
             pass
+
+    def clear_log_msg(self):
+        self.textEdit.clear()
+
+    def get_all_daq_value_once(self):
+        self.update_GUI()
+
+        self.DAQ.read_channel_voltage(self.comboBox_2.currentText())
+        self.vout_measurement_value = float(self.DAQ.get_voltage_result())
+        self.DAQ.read_channel_voltage(self.comboBox_4.currentText())
+        self.vin_measurement_value = float(self.DAQ.get_voltage_result())
+        self.dcsource.measure_current()
+        self.iin_measurement_value = float(self.dcsource.measure_current_value)
+
+        self.push_msg_to_GUI(
+            f"line139 vout={self.vout_measurement_value},vin={self.vin_measurement_value},Iin={self.iin_measurement_value}")
+
+    def abort_efficiency_measurement(self):
+        self.efficiency_measurement_thread.stop()
+
+    def run_efficiency_measurement(self, iout_list=0, cooldown_time=2, duration_time=2):
+
+        self.efficiency_measurement_thread.start()
+        '''
+        iout_list = [1, 2, 3, 4, 5]
+        self.eload = myvisa.chromaEload(self.comboBox_3.currentText())
+        for iout in iout_list:
+            self.eload.abort()
+            time.sleep(cooldown_time)
+            self.eload.setCurrent(9, iout)
+            self.eload.run()
+            time.sleep(duration_time)
+            self.get_all_daq_value_once()
+
+        self.eload.abort()
+        '''
+        pass
 
         '''
         # self.pushButton_8.clicked.connect(self.create_visa_equipment)

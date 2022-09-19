@@ -470,11 +470,33 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.label_20, 0, 0, 1, 1)
 
         self.comboBox_5 = QComboBox(self.groupBox_8)
+        self.comboBox_5.addItem("")
+        self.comboBox_5.addItem("")
+        self.comboBox_5.addItem("")
+        self.comboBox_5.addItem("")
+        self.comboBox_5.addItem("")
+        self.comboBox_5.addItem("")
+        self.comboBox_5.addItem("")
+        self.comboBox_5.addItem("")
+        self.comboBox_5.addItem("")
+        self.comboBox_5.addItem("")
+        self.comboBox_5.addItem("")
         self.comboBox_5.setObjectName(u"comboBox_5")
 
         self.gridLayout_2.addWidget(self.comboBox_5, 2, 1, 1, 2)
 
         self.comboBox_4 = QComboBox(self.groupBox_8)
+        self.comboBox_4.addItem("")
+        self.comboBox_4.addItem("")
+        self.comboBox_4.addItem("")
+        self.comboBox_4.addItem("")
+        self.comboBox_4.addItem("")
+        self.comboBox_4.addItem("")
+        self.comboBox_4.addItem("")
+        self.comboBox_4.addItem("")
+        self.comboBox_4.addItem("")
+        self.comboBox_4.addItem("")
+        self.comboBox_4.addItem("")
         self.comboBox_4.setObjectName(u"comboBox_4")
 
         self.gridLayout_2.addWidget(self.comboBox_4, 1, 1, 1, 2)
@@ -694,9 +716,53 @@ class Ui_MainWindow(object):
             10, QCoreApplication.translate("MainWindow", u"110", None))
 
         self.label_11.setText(QCoreApplication.translate(
-            "MainWindow", u"Iin channel", None))
+            "MainWindow", u"Vout2 channel", None))
         self.label_20.setText(QCoreApplication.translate(
             "MainWindow", u"Vin channel", None))
+        self.comboBox_5.setItemText(0, "")
+        self.comboBox_5.setItemText(
+            1, QCoreApplication.translate("MainWindow", u"101", None))
+        self.comboBox_5.setItemText(
+            2, QCoreApplication.translate("MainWindow", u"102", None))
+        self.comboBox_5.setItemText(
+            3, QCoreApplication.translate("MainWindow", u"103", None))
+        self.comboBox_5.setItemText(
+            4, QCoreApplication.translate("MainWindow", u"104", None))
+        self.comboBox_5.setItemText(
+            5, QCoreApplication.translate("MainWindow", u"105", None))
+        self.comboBox_5.setItemText(
+            6, QCoreApplication.translate("MainWindow", u"106", None))
+        self.comboBox_5.setItemText(
+            7, QCoreApplication.translate("MainWindow", u"107", None))
+        self.comboBox_5.setItemText(
+            8, QCoreApplication.translate("MainWindow", u"108", None))
+        self.comboBox_5.setItemText(
+            9, QCoreApplication.translate("MainWindow", u"109", None))
+        self.comboBox_5.setItemText(
+            10, QCoreApplication.translate("MainWindow", u"110", None))
+
+        self.comboBox_4.setItemText(0, "")
+        self.comboBox_4.setItemText(
+            1, QCoreApplication.translate("MainWindow", u"101", None))
+        self.comboBox_4.setItemText(
+            2, QCoreApplication.translate("MainWindow", u"102", None))
+        self.comboBox_4.setItemText(
+            3, QCoreApplication.translate("MainWindow", u"103", None))
+        self.comboBox_4.setItemText(
+            4, QCoreApplication.translate("MainWindow", u"104", None))
+        self.comboBox_4.setItemText(
+            5, QCoreApplication.translate("MainWindow", u"105", None))
+        self.comboBox_4.setItemText(
+            6, QCoreApplication.translate("MainWindow", u"106", None))
+        self.comboBox_4.setItemText(
+            7, QCoreApplication.translate("MainWindow", u"107", None))
+        self.comboBox_4.setItemText(
+            8, QCoreApplication.translate("MainWindow", u"108", None))
+        self.comboBox_4.setItemText(
+            9, QCoreApplication.translate("MainWindow", u"109", None))
+        self.comboBox_4.setItemText(
+            10, QCoreApplication.translate("MainWindow", u"110", None))
+
         self.label_21.setText(QCoreApplication.translate(
             "MainWindow", u"Vout channel", None))
         self.label_22.setText(QCoreApplication.translate(
