@@ -228,6 +228,11 @@ class chromaEload(gpibChromaMachine):
     def abort(self):
         self.inst.write("Abort")
 
+    def setCurrent(self, channel, current):
+        self.current = current
+        self.inst.write('CHAN '+str(channel))
+        self.inst.write('CURR:STAT:L1 '+str(current))
+
 
 if __name__ == '__main__':
 

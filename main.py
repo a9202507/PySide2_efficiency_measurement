@@ -56,6 +56,7 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
     def udpate_GUI_and_set_eload_on(self):
         self.update_GUI()
         self.eload = myvisa.chromaEload(self.comboBox_3.currentText())
+        self.eload.setCurrent(9, float(self.lineEdit_23.text()))
         self.eload.run()
 
     def udpate_GUI_and_set_eload_off(self):
