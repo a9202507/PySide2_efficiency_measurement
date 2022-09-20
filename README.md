@@ -1,5 +1,5 @@
 # PySide2_efficiency_measurement
-## Users can measure volatge reguator effciency through this GUI.
+## Users can measure voltage regulator efficiency through this GUI.
 
 ### equipments list
 * Win10 or later
