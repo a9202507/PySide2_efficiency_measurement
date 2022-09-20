@@ -80,7 +80,7 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.setupUi(self)
         self.debug = debug
 
-        self.setWindowTitle("Rev 2022.09.19")
+        self.setWindowTitle("Rev 2022.09.20")
         if self.debug:
             self.push_msg_to_GUI("Debug mode")
 
