@@ -12,12 +12,6 @@ import time
 import datetime
 import openpyxl
 
-# set icon to taskbar
-import ctypes
-myappid = 'mycompany.myproduct.subproduct.version'  # arbitrary string
-ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
-
-
 class efficiency_measure_thread(QThread):
     efficiency_process_bar = Signal(int)
 
@@ -118,6 +112,9 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.efficiency_measurement_thread = efficiency_measure_thread()
         self.efficiency_measurement_thread.efficiency_process_bar.connect(
             self.set_process_bar)
+
+        # 
+        self.actionAbout_the_GUI.triggered.connect(self.about_the_GUI)
 
     def update_GUI_and_get_DAQ_value_once(self):
         self.update_GUI()
@@ -226,6 +223,9 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
 
     def set_process_bar(self, value):
         self.progressBar.setValue(value)
+
+    def about_the_GUI(self):
+        QMessageBox.about(self, "about the GUI",'Powered by PySide2 and <a href=https://github.com/a9202507/PySide2_efficiency_measurement>Source code</a>' )
 
 
 if __name__ == "__main__":
