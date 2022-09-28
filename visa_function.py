@@ -232,6 +232,10 @@ class chromaEload(gpibChromaMachine):
         self.current = current
         self.inst.write('CHAN '+str(channel))
         self.inst.write('CURR:STAT:L1 '+str(current))
+        
+    def getCurrentMeasurement(self):
+        self.current_measurment=self.inst.query("FETCh:CURRent?")
+        return self.current_measurment
 
 
 if __name__ == '__main__':

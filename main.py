@@ -57,7 +57,7 @@ class efficiency_measure_thread(QThread):
             efficiency_result_dict['Vin'] = myWin.vin_measurement_value
             efficiency_result_dict['Iin'] = myWin.iin_measurement_value
             efficiency_result_dict['Vout'] = myWin.vout_measurement_value
-            efficiency_result_dict['Iout'] = iout
+            efficiency_result_dict['Iout'] = myWin.iout_measurement_value
 
             efficiency_result_df = efficiency_result_df.append(
                 efficiency_result_dict, ignore_index=True)
@@ -80,7 +80,7 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.setupUi(self)
         self.debug = debug
 
-        self.setWindowTitle("Rev 2022.09.20")
+        self.setWindowTitle("Rev 2022.09.28")
         if self.debug:
             self.push_msg_to_GUI("Debug mode")
 
@@ -204,12 +204,13 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
     def get_all_daq_value_once(self):
         self.update_GUI()
 
-        self.DAQ.read_channel_voltage(self.comboBox_2.currentText())
-        self.vout_measurement_value = float(self.DAQ.get_voltage_result())
         self.DAQ.read_channel_voltage(self.comboBox_4.currentText())
+        self.vout_measurement_value = float(self.DAQ.get_voltage_result())
+        self.DAQ.read_channel_voltage(self.comboBox_2.currentText())
         self.vin_measurement_value = float(self.DAQ.get_voltage_result())
         self.dcsource.measure_current()
         self.iin_measurement_value = float(self.dcsource.measure_current_value)
+        self.iout_measurement_value = float(self.eload.getCurrentMeasurement())
 
         self.push_msg_to_GUI(
             f"line139 vout={self.vout_measurement_value},vin={self.vin_measurement_value},Iin={self.iin_measurement_value}")
