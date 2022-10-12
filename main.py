@@ -54,10 +54,14 @@ class efficiency_measure_thread(QThread):
             myWin.get_all_daq_value_once()
 
             # save value to DF
+            efficiency_result_dict['Istep']=iout
             efficiency_result_dict['Vin'] = myWin.vin_measurement_value
             efficiency_result_dict['Iin'] = myWin.iin_measurement_value
             efficiency_result_dict['Vout'] = myWin.vout_measurement_value
+            efficiency_result_dict['remote Vout sense']=myWin.vout2_measurement_value
             efficiency_result_dict['Iout'] = myWin.iout_measurement_value
+            
+            
 
             efficiency_result_df = efficiency_result_df.append(
                 efficiency_result_dict, ignore_index=True)
@@ -65,8 +69,10 @@ class efficiency_measure_thread(QThread):
         self.efficiency_process_bar.emit(100)
         myWin.push_msg_to_GUI("completed")
         df = pd.DataFrame(efficiency_result_df, columns=[
-                          "Vin", "Iin", "Vout", "Iout"])
-        df.to_excel(f"{str(datetime.datetime.now().timestamp())+'.xlsx'}")
+                          "Istep","Vin", "Iin", "Vout","remote Vout sense", "Iout"])
+        now=datetime.datetime.now()
+        filename=now.strftime('%Y%m%d_%H%M%S')
+        df.to_excel(filename+'.xlsx')
 
     def stop(self):
         myWin.push_msg_to_GUI("user click stop")
@@ -80,7 +86,7 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.setupUi(self)
         self.debug = debug
 
-        self.setWindowTitle("Rev 2022.09.28")
+        self.setWindowTitle("Rev 2022.10.12")
         if self.debug:
             self.push_msg_to_GUI("Debug mode")
 
@@ -93,6 +99,7 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.pushButton_8.clicked.connect(self.run_efficiency_measurement)
         self.pushButton_4.clicked.connect(self.abort_efficiency_measurement)
         self.pushButton_5.clicked.connect(self.clear_log_msg)
+        self.comboBox_5.setEnabled(True)
 
         # DCsource
         self.radioButton.toggled.connect(
@@ -119,10 +126,26 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
     def update_GUI_and_get_DAQ_value_once(self):
         self.update_GUI()
         self.DAQ = myvisa.agilentDAQ(self.comboBox_7.currentText())
-        self.DAQ.read_channel_voltage(self.comboBox_2.currentText())
-        result = self.DAQ.get_voltage_result()
-        self.push_msg_to_GUI(
-            f"DAQ CH{self.comboBox_2.currentText()} reading value is {result}")
+
+        if self.comboBox_2.currentText() != "":
+            self.DAQ.read_channel_voltage(self.comboBox_2.currentText())
+            result = self.DAQ.get_voltage_result()
+            self.push_msg_to_GUI(
+                f"DAQ CH{self.comboBox_2.currentText()} reading value is {result}")
+            time.sleep(1)
+
+        if self.comboBox_4.currentText() != "":
+            self.DAQ.read_channel_voltage(self.comboBox_4.currentText())
+            result = self.DAQ.get_voltage_result()
+            self.push_msg_to_GUI(
+                f"DAQ CH{self.comboBox_4.currentText()} reading value is {result}")
+            time.sleep(1)
+
+        if self.comboBox_5.currentText() != "":  
+            self.DAQ.read_channel_voltage(self.comboBox_5.currentText())
+            result = self.DAQ.get_voltage_result()
+            self.push_msg_to_GUI(
+                f"DAQ CH{self.comboBox_5.currentText()} reading value is {result}")
 
     def udpate_GUI_and_set_eload_on(self):
         self.update_GUI()
@@ -206,6 +229,8 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
 
         self.DAQ.read_channel_voltage(self.comboBox_4.currentText())
         self.vout_measurement_value = float(self.DAQ.get_voltage_result())
+        self.DAQ.read_channel_voltage(self.comboBox_5.currentText())
+        self.vout2_measurement_value = float(self.DAQ.get_voltage_result())
         self.DAQ.read_channel_voltage(self.comboBox_2.currentText())
         self.vin_measurement_value = float(self.DAQ.get_voltage_result())
         self.dcsource.measure_current()
@@ -213,7 +238,7 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.iout_measurement_value = float(self.eload.getCurrentMeasurement())
 
         self.push_msg_to_GUI(
-            f"line139 vout={self.vout_measurement_value},vin={self.vin_measurement_value},Iin={self.iin_measurement_value}")
+            f"vout={self.vout_measurement_value}, vout2={self.vout2_measurement_value},vin={self.vin_measurement_value},Iin={self.iin_measurement_value}")
 
     def abort_efficiency_measurement(self):
         self.efficiency_measurement_thread.stop()
