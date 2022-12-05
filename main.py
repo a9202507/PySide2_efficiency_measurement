@@ -11,6 +11,8 @@ import pandas as pd
 import time
 import datetime
 import openpyxl
+import os
+import json
 
 class efficiency_measure_thread(QThread):
     efficiency_process_bar = Signal(int)
@@ -70,9 +72,12 @@ class efficiency_measure_thread(QThread):
         myWin.push_msg_to_GUI("completed")
         df = pd.DataFrame(efficiency_result_df, columns=[
                           "Istep","Vin", "Iin", "Vout","remote Vout sense", "Iout"])
-        now=datetime.datetime.now()
-        filename=now.strftime('%Y%m%d_%H%M%S')
-        df.to_excel(filename+'.xlsx')
+        #now=datetime.datetime.now()
+        #filename=now.strftime('%Y%m%d_%H%M%S')
+        #df.to_excel(filename+'.xlsx')
+        df.to_excel("./reports/"+myWin.save_filename+".xlsx")
+
+        myWin.open_report_folder()
 
     def stop(self):
         myWin.push_msg_to_GUI("user click stop")
@@ -82,11 +87,11 @@ class efficiency_measure_thread(QThread):
 class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
     def __init__(self, parent=None, debug=True):
         super(MyMainWindow, self).__init__(parent)
-        self.setFixedSize(730, 850)
+        self.setFixedSize(730, 780)
         self.setupUi(self)
         self.debug = debug
 
-        self.setWindowTitle("Rev 2022.10.12")
+        self.setWindowTitle("Rev 2022.12.05")
         if self.debug:
             self.push_msg_to_GUI("Debug mode")
 
@@ -95,11 +100,25 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.comboBox.currentIndexChanged.connect(self.update_dcsource_name)
         self.comboBox_7.currentIndexChanged.connect(self.update_DAQ_name)
         self.comboBox_3.currentIndexChanged.connect(self.update_eload_name)
-        self.pushButton_12.clicked.connect(self.get_all_daq_value_once)
+        self.pushButton_13.clicked.connect(self.get_all_daq_value_once)
         self.pushButton_8.clicked.connect(self.run_efficiency_measurement)
         self.pushButton_4.clicked.connect(self.abort_efficiency_measurement)
         self.pushButton_5.clicked.connect(self.clear_log_msg)
+        self.pushButton_11.clicked.connect(self.open_report_folder)
         self.comboBox_5.setEnabled(True)
+        self.groupBox_4.setEnabled(True)
+        #self.lineEdit_27.setEnabled(True)
+        self.checkBox_2.setEnabled(False)
+        self.pushButton_11.setEnabled(True)
+        #self.lineEdit_27.setReadOnly(False)
+
+        self.actionLoad_config.setEnabled(True)
+        self.actionLoad_config.triggered.connect(self.load_config)
+        self.actionSave_config.setEnabled(True)
+        self.actionSave_config.triggered.connect(self.save_config)
+
+        ## test function 
+        #self.pushButton_12.clicked.connect(self.test_folder_function)
 
         # DCsource
         self.radioButton.toggled.connect(
@@ -122,6 +141,29 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
 
         # 
         self.actionAbout_the_GUI.triggered.connect(self.about_the_GUI)
+
+        ###
+        #self.load_config_sub2('./init.json')
+
+        ## test only
+        self.comboBox_2.addItem("201")
+
+    def create_filename_includes_condition_timestamp(self):
+        myreportpath=self.lineEdit_27.text()
+        if myreportpath[0]!=".":
+            myreportpath="."+myreportpath
+        if os.path.isdir(myreportpath) is False:
+            os.makedirs(myreportpath)
+            #self.push_msg_to_GUI(f"create {myreportpath} successful")
+        else:
+            #self.push_msg_to_GUI(f"the {myreportpath} already exist")
+            pass
+        
+        now=datetime.datetime.now()
+        now_stamp=now.strftime('%Y%m%d_%H%M%S')
+        filename=f"{self.lineEdit_7.text()}_{self.lineEdit_19.text()}Amps_{self.lineEdit_20.text()}percentage_{now_stamp}.xls"
+        #self.push_msg_to_GUI(f"filename={filename}")
+        self.save_filename=filename
 
     def update_GUI_and_get_DAQ_value_once(self):
         self.update_GUI()
@@ -244,7 +286,7 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.efficiency_measurement_thread.stop()
 
     def run_efficiency_measurement(self, iout_list=0, cooldown_time=2, duration_time=2):
-
+        self.create_filename_includes_condition_timestamp() # get filename for report.
         self.efficiency_measurement_thread.start()
 
     def set_process_bar(self, value):
@@ -253,6 +295,94 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
     def about_the_GUI(self):
         QMessageBox.about(self, "about the GUI",'Powered by PySide2 and <a href=https://github.com/a9202507/PySide2_efficiency_measurement>Source code</a>' )
 
+    def load_config(self):
+        filenames=self.load_config_sub1()
+        self.load_config_sub2(filenames)
+
+    def load_config_sub1(self):
+
+        try:
+            dlg = QFileDialog(self, 'Open File', '.',
+                              'JSON Files (*.json);;All Files (*)')
+            if dlg.exec_():
+                filenames = dlg.selectedFiles()
+
+                return filenames
+
+                with open(filenames[0], 'r') as j:
+                    json_data = json.load(j)
+                    
+                self.lineEdit_16.setText(json_data["main_dcsource_voltage"])
+                self.lineEdit_17.setText(json_data["main_dcsource_current"])
+                self.lineEdit_18.setText(json_data["main_condition_start_current"])
+                self.lineEdit_19.setText(json_data["main_condition_end_current"])
+                self.lineEdit_20.setText(json_data["main_condition_percentage"])
+                self.lineEdit_21.setText(json_data["main_condition_duration_time"])
+                self.lineEdit_22.setText(json_data["main_condition_cooldown_time"])
+
+            else:
+                QMessageBox.about(
+                    self, "Warning", "It can't support this page")
+        except:
+            QMessageBox.about(
+                self, "Warning", "The JSON file can't match this page, please select another .JSON file")
+
+    def load_config_sub2(self,filenames):
+
+        with open(filenames[0], 'r') as j:
+                    json_data = json.load(j)
+                    
+        self.lineEdit_16.setText(json_data["main_dcsource_voltage"])
+        self.lineEdit_17.setText(json_data["main_dcsource_current"])
+        self.lineEdit_18.setText(json_data["main_condition_start_current"])
+        self.lineEdit_19.setText(json_data["main_condition_end_current"])
+        self.lineEdit_20.setText(json_data["main_condition_percentage"])
+        self.lineEdit_21.setText(json_data["main_condition_duration_time"])
+        self.lineEdit_22.setText(json_data["main_condition_cooldown_time"])
+        self.lineEdit_27.setText(json_data["setting_misc_save_folder"])
+        self.lineEdit_7.setText(json_data["setting_misc_save_filename"])
+        self.comboBox_2.setCurrentText(json_data["setting_daq_vin_channel"])
+        self.comboBox_4.setCurrentText(json_data["setting_daq_vout_channel"])
+        self.comboBox_5.setCurrentText(json_data["setting_daq_vout2_channel"])
+        self.comboBox.setCurrentText(json_data["setting_equipment_DC_source"])
+        self.comboBox_7.setCurrentText(json_data["setting_equipment_DAQ"])
+        self.comboBox_3.setCurrentText(json_data["setting_equipment_e_load"])
+
+    def save_config(self):
+        if True:
+            self.parameter_dict = {"main_dcsource_voltage": self.lineEdit_16.text(),
+                                   "main_dcsource_current": self.lineEdit_17.text(),
+                                   "main_condition_start_current":self.lineEdit_18.text(),
+                                   "main_condition_end_current":self.lineEdit_19.text(),
+                                   "main_condition_percentage":self.lineEdit_20.text(),
+                                   "main_condition_duration_time":self.lineEdit_21.text(),
+                                   "main_condition_cooldown_time":self.lineEdit_22.text(),
+                                   "setting_misc_save_folder":self.lineEdit_27.text(),
+                                   "setting_misc_save_filename":self.lineEdit_7.text(),
+                                   "setting_daq_vin_channel":self.comboBox_2.currentText(),
+                                   "setting_daq_vout_channel":self.comboBox_4.currentText(),
+                                   "setting_daq_vout2_channel":self.comboBox_5.currentText(),
+                                   "setting_equipment_DC_source":self.comboBox.currentText(),
+                                   "setting_equipment_DAQ":self.comboBox_7.currentText(),
+                                   "setting_equipment_e_load":self.comboBox_3.currentText(),
+                                   }
+        
+        filename_with_path = QFileDialog.getSaveFileName(
+            self, 'Save File', '.', 'JSON Files (*.json)')
+        save_filename = filename_with_path[0]
+        if save_filename != "":
+            with open(save_filename, 'w') as fp:
+                #json.dump(self.parameter_dict, fp)
+                fp.write(json.dumps(self.parameter_dict, indent=4))
+        # else:
+            # print(self.tabWidget.currentIndex)
+            #print("only can save first tab now")
+
+        self.parameter_dict.clear()
+
+    def open_report_folder(self):
+        path=self.lineEdit_27.text()
+        os.system(f'start {os.path.realpath(path)}')
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

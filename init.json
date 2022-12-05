@@ -1,0 +1,17 @@
+{
+    "main_dcsource_voltage": "13.5",
+    "main_dcsource_current": "30",
+    "main_condition_start_current": "0",
+    "main_condition_end_current": "240",
+    "main_condition_percentage": "20",
+    "main_condition_duration_time": "2",
+    "main_condition_cooldown_time": "5",
+    "setting_misc_save_folder": "./reports",
+    "setting_misc_save_filename": "IFX",
+    "setting_daq_vin_channel": "105",
+    "setting_daq_vout_channel": "101",
+    "setting_daq_vout2_channel": "103",
+    "setting_equipment_DC_source": "GPIB0::5::INSTR",
+    "setting_equipment_DAQ": "GPIB0::10::INSTR",
+    "setting_equipment_e_load": "GPIB0::9::INSTR"
+}
