@@ -33,8 +33,8 @@ class efficiency_measure_thread(QThread):
         iout_list = [0]
         iout_step = end_current*percentage
         itemp = iout_step
-        while itemp <= end_current:
-            iout_list.append(itemp)
+        while float(format(itemp,".2f")) <= end_current:
+            iout_list.append(format(itemp,".2f"))
             itemp += iout_step
         myWin.push_msg_to_GUI(f"iout_list={iout_list}")
 
