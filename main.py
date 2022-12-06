@@ -13,6 +13,7 @@ import datetime
 import openpyxl
 import os
 import json
+from UliPlot.XLSX import auto_adjust_xlsx_column_width
 
 class efficiency_measure_thread(QThread):
     efficiency_process_bar = Signal(int)
@@ -56,13 +57,18 @@ class efficiency_measure_thread(QThread):
             myWin.get_all_daq_value_once()
 
             # save value to DF
-            efficiency_result_dict['Istep']=iout
+            efficiency_result_dict['Istep']=float(iout)
             efficiency_result_dict['Vin'] = myWin.vin_measurement_value
             efficiency_result_dict['Iin'] = myWin.iin_measurement_value
             efficiency_result_dict['Vout'] = myWin.vout_measurement_value
             efficiency_result_dict['remote Vout sense']=myWin.vout2_measurement_value
             efficiency_result_dict['Iout'] = myWin.iout_measurement_value
-            
+
+            efficiency=(efficiency_result_dict['Vout']*efficiency_result_dict['Iout'])/(efficiency_result_dict['Vin']*efficiency_result_dict['Iin'])
+            efficiency_remote=(efficiency_result_dict['remote Vout sense']*efficiency_result_dict['Iout'])/(efficiency_result_dict['Vin']*efficiency_result_dict['Iin'])
+
+            efficiency_result_dict['Efficiency'] = float(format(efficiency*100,".3f"))
+            efficiency_result_dict['Efficiency_remote'] = float(format(efficiency_remote*100,".3f"))
             
 
             efficiency_result_df = efficiency_result_df.append(
@@ -71,11 +77,18 @@ class efficiency_measure_thread(QThread):
         self.efficiency_process_bar.emit(100)
         myWin.push_msg_to_GUI("completed")
         df = pd.DataFrame(efficiency_result_df, columns=[
-                          "Istep","Vin", "Iin", "Vout","remote Vout sense", "Iout"])
+                          "Istep","Vin", "Iin", "Vout","remote Vout sense", "Iout","Efficiency","Efficiency_remote"])
         #now=datetime.datetime.now()
         #filename=now.strftime('%Y%m%d_%H%M%S')
         #df.to_excel(filename+'.xlsx')
-        df.to_excel("./reports/"+myWin.save_filename+".xlsx")
+        ##df.to_excel("./reports/"+myWin.save_filename+".xlsx",sheet_name=f"{myWin.lineEdit_16.text()}Vin_{format(df['Vout'][0],'.2f')}Vout_{end_current}Amps")
+
+
+        mysheet=f"{myWin.lineEdit_16.text()}Vin_{format(df['Vout'][0],'.2f')}Vout_{end_current}Amps"
+        with pd.ExcelWriter("./reports/"+myWin.save_filename+".xlsx") as writer:
+            df.to_excel(writer, sheet_name=mysheet)
+            auto_adjust_xlsx_column_width(df, writer, sheet_name=mysheet, margin=5)
+
 
         myWin.open_report_folder()
 
@@ -91,7 +104,7 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.setupUi(self)
         self.debug = debug
 
-        self.setWindowTitle("Rev 2022.12.05")
+        self.setWindowTitle("Rev 2022.12.06")
         if self.debug:
             self.push_msg_to_GUI("Debug mode")
 
@@ -158,10 +171,12 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         else:
             #self.push_msg_to_GUI(f"the {myreportpath} already exist")
             pass
-        
+        vin=self.lineEdit_16.text()
+        self.get_all_daq_value_once()
+        vout=format(self.vout_measurement_value,".3f")
         now=datetime.datetime.now()
         now_stamp=now.strftime('%Y%m%d_%H%M%S')
-        filename=f"{self.lineEdit_7.text()}_{self.lineEdit_19.text()}Amps_{self.lineEdit_20.text()}percentage_{now_stamp}.xls"
+        filename=f"{self.lineEdit_7.text()}_{vin}Vin_{vout}Vout_{self.lineEdit_19.text()}Amps_Istep{self.lineEdit_20.text()}pct_{now_stamp}"
         #self.push_msg_to_GUI(f"filename={filename}")
         self.save_filename=filename
 
