@@ -53,6 +53,34 @@ class agilentDAQ(visa_equipment):
     def get_voltage_result(self):
         return self.voltage_value
 
+class agilent_visa_equipment(visa_equipment):
+    def __init__(self, visa_resource_name):
+        visa_equipment.__init__(self, visa_resource_name)
+        
+
+    def on(self):
+        self.inst.write('OUTPUT:STATE ON')
+
+    def off(self):
+        self.inst.write('OUTPUT:STATE OFF')
+
+
+class agilent_DCSource(agilent_visa_equipment):
+    def __init__(self, visa_resource_name):
+        agilent_visa_equipment.__init__(self, visa_resource_name)
+
+    def set_voltage(self, voltage):
+        self.inst.write(f'SOURce:VOLTage {voltage}')
+
+    def set_current(self, current):
+        self.inst.write(f'SOURce:CURRent {current}')
+
+    def measure_voltage(self):
+        self.measure_voltage_value = self.inst.query("MEAS:VOLT?")
+
+    def measure_current(self):
+        self.measure_current_value = self.inst.query("MEAS:CURR?")
+
 
 class tek_visa_equipment(visa_equipment):
     def __init__(self, visa_resource_name):
@@ -189,7 +217,6 @@ def save_waveform_in_inst(visaRsrcAddr, fileSaveLocationInInst, filename, timest
     scope.close()
     rm.close()
 
-
 class gpibChromaMachine(visa_equipment):
     def __init__(self, visa_resource_name):
         visa_equipment.__init__(self, visa_resource_name)
@@ -242,3 +269,4 @@ if __name__ == '__main__':
 
     devices = get_visa_resource_list()
     print(devices)
+    agilent_DC=agilent_DCSource(devices[3])

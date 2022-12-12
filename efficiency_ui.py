@@ -52,28 +52,6 @@ class Ui_MainWindow(object):
         self.groupBox.setGeometry(QRect(10, 10, 189, 171))
         self.gridLayout_4 = QGridLayout(self.groupBox)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
-        self.groupBox_6 = QGroupBox(self.groupBox)
-        self.groupBox_6.setObjectName(u"groupBox_6")
-        self.verticalLayout_3 = QVBoxLayout(self.groupBox_6)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.radioButton = QRadioButton(self.groupBox_6)
-        self.radioButton.setObjectName(u"radioButton")
-
-        self.verticalLayout_3.addWidget(self.radioButton)
-
-        self.radioButton_2 = QRadioButton(self.groupBox_6)
-        self.radioButton_2.setObjectName(u"radioButton_2")
-
-        self.verticalLayout_3.addWidget(self.radioButton_2)
-
-
-        self.gridLayout_4.addWidget(self.groupBox_6, 2, 1, 1, 1)
-
-        self.label_12 = QLabel(self.groupBox)
-        self.label_12.setObjectName(u"label_12")
-
-        self.gridLayout_4.addWidget(self.label_12, 2, 0, 1, 1)
-
         self.lineEdit_16 = QLineEdit(self.groupBox)
         self.lineEdit_16.setObjectName(u"lineEdit_16")
 
@@ -93,6 +71,28 @@ class Ui_MainWindow(object):
         self.lineEdit_17.setObjectName(u"lineEdit_17")
 
         self.gridLayout_4.addWidget(self.lineEdit_17, 1, 1, 1, 1)
+
+        self.label_12 = QLabel(self.groupBox)
+        self.label_12.setObjectName(u"label_12")
+
+        self.gridLayout_4.addWidget(self.label_12, 2, 0, 1, 1)
+
+        self.groupBox_6 = QGroupBox(self.groupBox)
+        self.groupBox_6.setObjectName(u"groupBox_6")
+        self.verticalLayout_3 = QVBoxLayout(self.groupBox_6)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.radioButton = QRadioButton(self.groupBox_6)
+        self.radioButton.setObjectName(u"radioButton")
+
+        self.verticalLayout_3.addWidget(self.radioButton)
+
+        self.radioButton_2 = QRadioButton(self.groupBox_6)
+        self.radioButton_2.setObjectName(u"radioButton_2")
+
+        self.verticalLayout_3.addWidget(self.radioButton_2)
+
+
+        self.gridLayout_4.addWidget(self.groupBox_6, 2, 1, 2, 1)
 
         self.groupBox_7 = QGroupBox(self.tab)
         self.groupBox_7.setObjectName(u"groupBox_7")
@@ -348,6 +348,11 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.pushButton_6, 0, 3, 1, 1)
 
+        self.checkBox_8 = QCheckBox(self.groupBox_2)
+        self.checkBox_8.setObjectName(u"checkBox_8")
+
+        self.gridLayout.addWidget(self.checkBox_8, 1, 3, 1, 1)
+
         self.groupBox_4 = QGroupBox(self.tab_2)
         self.groupBox_4.setObjectName(u"groupBox_4")
         self.groupBox_4.setEnabled(False)
@@ -572,14 +577,14 @@ class Ui_MainWindow(object):
         self.label_10.setText("")
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"Efficiency GUI", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"DC source setting", None))
-        self.groupBox_6.setTitle("")
-        self.radioButton.setText(QCoreApplication.translate("MainWindow", u"On", None))
-        self.radioButton_2.setText(QCoreApplication.translate("MainWindow", u"Off", None))
-        self.label_12.setText(QCoreApplication.translate("MainWindow", u"Toggle", None))
         self.lineEdit_16.setText(QCoreApplication.translate("MainWindow", u"20", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"current(A)", None))
         self.label_18.setText(QCoreApplication.translate("MainWindow", u"voltage(V)", None))
         self.lineEdit_17.setText(QCoreApplication.translate("MainWindow", u"20", None))
+        self.label_12.setText(QCoreApplication.translate("MainWindow", u"Toggle", None))
+        self.groupBox_6.setTitle("")
+        self.radioButton.setText(QCoreApplication.translate("MainWindow", u"On", None))
+        self.radioButton_2.setText(QCoreApplication.translate("MainWindow", u"Off", None))
         self.groupBox_7.setTitle("")
         self.pushButton_8.setText(QCoreApplication.translate("MainWindow", u"Start efficiency", None))
         self.pushButton_4.setText(QCoreApplication.translate("MainWindow", u"abort efficiency", None))
@@ -627,11 +632,12 @@ class Ui_MainWindow(object):
         self.lineEdit_30.setText("")
         self.label_19.setText(QCoreApplication.translate("MainWindow", u"DC source", None))
         self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"re-scan equipments", None))
+        self.checkBox_8.setText(QCoreApplication.translate("MainWindow", u"Agilent DCsource", None))
         self.groupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Misc", None))
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"Output folder in PC", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"filename", None))
         self.checkBox.setText(QCoreApplication.translate("MainWindow", u"filename include condition", None))
-        self.pushButton_11.setText(QCoreApplication.translate("MainWindow", u"set report folder", None))
+        self.pushButton_11.setText(QCoreApplication.translate("MainWindow", u"Open report folder", None))
         self.checkBox_2.setText(QCoreApplication.translate("MainWindow", u"filename include timestamp", None))
         self.pushButton_7.setText(QCoreApplication.translate("MainWindow", u"Save waveform once", None))
         self.lineEdit_27.setText(QCoreApplication.translate("MainWindow", u"./reports", None))

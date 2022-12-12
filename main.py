@@ -104,7 +104,7 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.setupUi(self)
         self.debug = debug
 
-        self.setWindowTitle("Rev 2022.12.06")
+        self.setWindowTitle("Rev 2022.12.12")
         if self.debug:
             self.push_msg_to_GUI("Debug mode")
 
@@ -134,6 +134,9 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         #self.pushButton_12.clicked.connect(self.test_folder_function)
 
         # DCsource
+
+        self.checkBox_8.stateChanged.connect(self.select_dc_source_vendor)
+
         self.radioButton.toggled.connect(
             self.update_GUI_and_set_dcsource_on)
         self.radioButton_2.toggled.connect(
@@ -249,6 +252,21 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
                 self.comboBox.currentText())
             device_name = self.dcsource.get_equipment_name()
             self.lineEdit_28.setText(device_name)
+
+    def select_dc_source_vendor(self):
+
+        if self.checkBox_8.isChecked() == True:
+            self.set_dc_source_to_Agilent()
+        else:
+            self.set_dc_source_to_Chroma()
+        
+
+    def set_dc_source_to_Agilent(self): 
+
+        self.dcsource = myvisa.agilent_DCSource(self.comboBox.currentText())
+
+    def set_dc_source_to_Chroma(self):
+        self.dcsource = myvisa.gpibChromaDCSource(self.comboBox.currentText())
 
     def update_DAQ_name(self):
         self.lineEdit_29.clear()
