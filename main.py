@@ -2,6 +2,7 @@
 # a9202507@gmail.com
 
 import sys
+import traceback
 from PySide2.QtCore import QThread, Signal
 from PySide2.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBox
 from PySide2.QtGui import QIcon
@@ -104,7 +105,7 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.setupUi(self)
         self.debug = debug
 
-        self.setWindowTitle("Rev 2022.12.12")
+        self.setWindowTitle("Rev 2022.12.27")
         if self.debug:
             self.push_msg_to_GUI("Debug mode")
 
@@ -417,11 +418,32 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         path=self.lineEdit_27.text()
         os.system(f'start {os.path.realpath(path)}')
 
+
+def run():
+   try:
+        
+        app = QApplication(sys.argv)
+
+        myWin = MyMainWindow(debug=True)
+
+        myWin.show()
+
+        sys.exit(app.exec_())
+        
+   except Exception as err:
+        with open("log.txt",'a') as file:
+            now=datetime.datetime.now()
+            now_stamp=now.strftime('%Y%m%d_%H%M%S')
+            err_type = err.__class__.__name__ # 取得錯誤的class 名稱
+            info = err.args[0] # 取得詳細內容
+            detains = traceback.format_exc() # 取得完整的tracestack
+            n1, n2, n3 = sys.exc_info() #取得Call Stack
+            lastCallStack =  traceback.extract_tb(n3)[-1] # 取得Call Stack 最近一筆的內容
+            fn = lastCallStack [0] # 取得發生事件的檔名
+            lineNum = lastCallStack[1] # 取得發生事件的行數
+            funcName = lastCallStack[2] # 取得發生事件的函數名稱
+            errMesg = f"{now_stamp}\n FileName : {fn}, lineNum: {lineNum}, Fun: {funcName}, reason: {info}, trace:\n {traceback.format_exc()}\n"
+            file.write(errMesg)
+
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-
-    myWin = MyMainWindow(debug=True)
-
-    myWin.show()
-
-    sys.exit(app.exec_())
+    run()
