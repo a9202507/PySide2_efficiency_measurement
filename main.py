@@ -15,6 +15,7 @@ import openpyxl
 import os
 import json
 from UliPlot.XLSX import auto_adjust_xlsx_column_width
+import shutil # file copy
 
 class efficiency_measure_thread(QThread):
     efficiency_process_bar = Signal(int)
@@ -105,7 +106,7 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.setupUi(self)
         self.debug = debug
 
-        self.setWindowTitle("Rev 2022.12.27")
+        self.setWindowTitle("Rev 2022.12.28")
         if self.debug:
             self.push_msg_to_GUI("Debug mode")
 
@@ -132,7 +133,7 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.actionSave_config.triggered.connect(self.save_config)
 
         ## test function 
-        #self.pushButton_12.clicked.connect(self.test_folder_function)
+        ## self.pushButton_12.clicked.connect(self.test_folder_function)
 
         # DCsource
 
@@ -419,8 +420,9 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         os.system(f'start {os.path.realpath(path)}')
 
 
-def run():
-   try:
+
+if __name__ == "__main__":
+    try:
         
         app = QApplication(sys.argv)
 
@@ -430,20 +432,21 @@ def run():
 
         sys.exit(app.exec_())
         
-   except Exception as err:
-        with open("log.txt",'a') as file:
-            now=datetime.datetime.now()
-            now_stamp=now.strftime('%Y%m%d_%H%M%S')
-            err_type = err.__class__.__name__ # 取得錯誤的class 名稱
-            info = err.args[0] # 取得詳細內容
-            detains = traceback.format_exc() # 取得完整的tracestack
-            n1, n2, n3 = sys.exc_info() #取得Call Stack
-            lastCallStack =  traceback.extract_tb(n3)[-1] # 取得Call Stack 最近一筆的內容
-            fn = lastCallStack [0] # 取得發生事件的檔名
-            lineNum = lastCallStack[1] # 取得發生事件的行數
-            funcName = lastCallStack[2] # 取得發生事件的函數名稱
-            errMesg = f"{now_stamp}\n FileName : {fn}, lineNum: {lineNum}, Fun: {funcName}, reason: {info}, trace:\n {traceback.format_exc()}\n"
-            file.write(errMesg)
-
-if __name__ == "__main__":
-    run()
+    except Exception as err:
+        shutil.copyfile("log.txt","log_old.txt")
+        with open("log_old.txt",'r') as file:
+            with open('log.txt','w') as file2:
+                now=datetime.datetime.now()
+                now_stamp=now.strftime('%Y%m%d_%H%M%S')
+                err_type = err.__class__.__name__ # 取得錯誤的class 名稱
+                info = err.args[0] # 取得詳細內容
+                detains = traceback.format_exc() # 取得完整的tracestack
+                n1, n2, n3 = sys.exc_info() #取得Call Stack
+                lastCallStack =  traceback.extract_tb(n3)[-1] # 取得Call Stack 最近一筆的內容
+                fn = lastCallStack [0] # 取得發生事件的檔名
+                lineNum = lastCallStack[1] # 取得發生事件的行數
+                funcName = lastCallStack[2] # 取得發生事件的函數名稱
+                errMesg = f"{now_stamp}\n FileName : {fn}, lineNum: {lineNum}, Fun: {funcName}, reason: {info}, trace:\n {traceback.format_exc()}\n"
+                file2.write(errMesg)
+                file2.write(file.read())
+        os.remove("log_old.txt")
