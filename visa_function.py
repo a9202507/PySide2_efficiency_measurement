@@ -1,9 +1,10 @@
+## a9202507@gmail.com
+
 import pyvisa
 import time
 import pathlib
 from datetime import datetime
 rm = pyvisa.ResourceManager()
-
 
 def get_visa_resource_list(remove_ASRL_devices=False):
     rm = pyvisa.ResourceManager()
