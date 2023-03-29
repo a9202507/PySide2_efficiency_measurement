@@ -60,8 +60,13 @@ class efficiency_measure_thread(QThread):
 
             # save value to DF
             efficiency_result_dict['Istep']=float(iout)
-            efficiency_result_dict['Vin'] = myWin.vin_measurement_value
+
+            
             efficiency_result_dict['Iin'] = myWin.iin_measurement_value
+
+                
+            efficiency_result_dict['Vin'] = myWin.vin_measurement_value
+            
             efficiency_result_dict['Vout'] = myWin.vout_measurement_value
             efficiency_result_dict['remote Vout sense']=myWin.vout2_measurement_value
             efficiency_result_dict['Iout'] = myWin.iout_measurement_value
@@ -106,7 +111,7 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.setupUi(self)
         self.debug = debug
 
-        self.setWindowTitle("Rev 2022.12.28")
+        self.setWindowTitle("Rev 2023.03.29")
         if self.debug:
             self.push_msg_to_GUI("Debug mode")
 
@@ -208,7 +213,12 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
             result = self.DAQ.get_voltage_result()
             self.push_msg_to_GUI(
                 f"DAQ CH{self.comboBox_5.currentText()} reading value is {result}")
-
+        
+        if self.comboBox_6.currentText() != "DC source":  
+            self.DAQ.read_channel_voltage(self.comboBox_6.currentText())
+            result = self.DAQ.get_voltage_result()
+            self.push_msg_to_GUI(
+                f"DAQ CH{self.comboBox_6.currentText()} reading value is {result}")
     def udpate_GUI_and_set_eload_on(self):
         self.update_GUI()
         self.eload = myvisa.chromaEload(self.comboBox_3.currentText())
@@ -310,12 +320,21 @@ class MyMainWindow(QMainWindow, efficiency_ui.Ui_MainWindow):
         self.vout2_measurement_value = float(self.DAQ.get_voltage_result())
         self.DAQ.read_channel_voltage(self.comboBox_2.currentText())
         self.vin_measurement_value = float(self.DAQ.get_voltage_result())
-        self.dcsource.measure_current()
-        self.iin_measurement_value = float(self.dcsource.measure_current_value)
         self.iout_measurement_value = float(self.eload.getCurrentMeasurement())
 
-        self.push_msg_to_GUI(
-            f"vout={self.vout_measurement_value}, vout2={self.vout2_measurement_value},vin={self.vin_measurement_value},Iin={self.iin_measurement_value}")
+        if self.comboBox_6.currentText() != "DC source":
+            self.DAQ.read_channel_voltage(self.comboBox_6.currentText())
+            self.voltage_on_rshunt=float(self.DAQ.get_voltage_result())
+            rshunt_value=float(self.lineEdit_31.text())
+            self.iin_measurement_value = (self.voltage_on_rshunt/rshunt_value)*1000
+
+            self.push_msg_to_GUI(
+                f"vout={self.vout_measurement_value}, vout2={self.vout2_measurement_value},vin={self.vin_measurement_value},Iin={self.iin_measurement_value}Amp")
+        else:
+            self.dcsource.measure_current()
+            self.iin_measurement_value = float(self.dcsource.measure_current_value)
+            self.push_msg_to_GUI(
+                f"vout={self.vout_measurement_value}, vout2={self.vout2_measurement_value},vin={self.vin_measurement_value},Iin={self.iin_measurement_value}")
 
     def abort_efficiency_measurement(self):
         self.efficiency_measurement_thread.stop()

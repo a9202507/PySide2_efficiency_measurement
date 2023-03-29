@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>726</width>
-    <height>759</height>
+    <width>785</width>
+    <height>793</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -61,7 +61,7 @@
      <rect>
       <x>10</x>
       <y>90</y>
-      <width>701</width>
+      <width>711</width>
       <height>421</height>
      </rect>
     </property>
@@ -471,8 +471,8 @@
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>471</width>
-        <height>201</height>
+        <width>451</width>
+        <height>181</height>
        </rect>
       </property>
       <property name="title">
@@ -565,9 +565,9 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>220</y>
-        <width>471</width>
-        <height>154</height>
+        <y>203</y>
+        <width>451</width>
+        <height>181</height>
        </rect>
       </property>
       <property name="title">
@@ -665,7 +665,7 @@
      <widget class="QGroupBox" name="groupBox_5">
       <property name="geometry">
        <rect>
-        <x>500</x>
+        <x>480</x>
         <y>10</y>
         <width>181</width>
         <height>181</height>
@@ -720,9 +720,9 @@
      <widget class="QGroupBox" name="groupBox_8">
       <property name="geometry">
        <rect>
-        <x>500</x>
+        <x>480</x>
         <y>200</y>
-        <width>181</width>
+        <width>211</width>
         <height>181</height>
        </rect>
       </property>
@@ -733,7 +733,7 @@
        <item row="2" column="1" colspan="2">
         <widget class="QComboBox" name="comboBox_5">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <item>
           <property name="text">
@@ -816,11 +816,66 @@
        <item row="3" column="1" colspan="2">
         <widget class="QComboBox" name="comboBox_6">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <item>
           <property name="text">
            <string>DC source</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>101</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>102</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>103</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>104</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>105</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>106</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>107</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>108</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>109</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>110</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>111</string>
           </property>
          </item>
         </widget>
@@ -960,7 +1015,7 @@
        <item row="4" column="1" colspan="2">
         <widget class="QLineEdit" name="lineEdit_31">
          <property name="enabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="text">
           <string>2</string>
@@ -969,7 +1024,7 @@
           <number>1</number>
          </property>
          <property name="readOnly">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -982,7 +1037,7 @@
      <rect>
       <x>10</x>
       <y>520</y>
-      <width>701</width>
+      <width>691</width>
       <height>161</height>
      </rect>
     </property>
@@ -992,7 +1047,7 @@
      <rect>
       <x>10</x>
       <y>690</y>
-      <width>581</width>
+      <width>571</width>
       <height>23</height>
      </rect>
     </property>
@@ -1006,7 +1061,7 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>600</x>
+      <x>590</x>
       <y>690</y>
       <width>111</width>
       <height>23</height>
@@ -1022,7 +1077,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>726</width>
+     <width>785</width>
      <height>26</height>
     </rect>
    </property>
